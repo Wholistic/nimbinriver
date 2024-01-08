@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nimbin River Height Monitor</title>
+    <style>
+        /* Basic styling for the body */
+        body {
+            font-family: Arial, sans-serif;
+            padding: 0;
+            margin: 0;
+            background-color: #e5e5e5;
+        }
+        /* Container for the content, centered with a shadow effect */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+        /* Header styles with centered text */
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+        }
+        /* Main display area styling */
+        .main-display {
+            text-align: center;
+        }
+        /* Styling for the most recent river height reading */
+        .most-recent {
+            font-size: 3em;
+            font-weight: bold;
+        }
+        /* Styling for the second most recent river height reading */
+        .second-recent {
+            font-size: 1em;
+            color: #888;
+            margin-top: 15px;
+        }
+        /* Styling for the highest river height in the last 24 hours */
+        .highest-last-24h {
+            font-size: 1em;
+            color: #888;
+            margin-top: 15px;
+        }
+        /* Last update information styling */
+        .last-update {
+            margin-top: 15px;
+            font-style: italic;
+            color: #444;
+        }
+        /* Instructions for refreshing the data */
+        .refresh-instruction {
+            text-align: center;
+            padding: 10px;
+        }
+        /* Footer styling with smaller text */
+        .footer {
+            padding-top: 20px;
+            text-align: center;
+            font-size: 0.8em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Nimbin River Height Monitor</h1>
+        </div>
+        <div class="main-display">
+            <!-- Display the most recent and second most recent river height readings -->
+            {% if most_recent and second_most_recent %}
+                <div class="most-recent">
+                    {{ most_recent[3] }}m {% if most_recent[3] > second_most_recent[3] %}↗{% elif most_recent[3] < second_most_recent[3] %}↘{% else %}~{% endif %}
+                </div>
+                <div class="second-recent">
+                  previous reading: {{ second_most_recent[3] }}m
+                </div>
+            <!-- Display only the most recent river height reading if there's no second most recent -->
+            {% elif most_recent %}
+                <div class="most-recent">
+                    {{ most_recent[3] }}m
+                </div>
+            {% endif %}
+            <!-- Display the highest river height in the last 24 hours if available -->
+            {% if highest_last_24h %}
+                <div class="highest-last-24h">
+                    24h maximum: {{ highest_last_24h[3] }}m
+                </div>
+            {% endif %}
+            <!-- Display the last update time -->
+            <div class="last-update">
+                Last Updated: {{ last_update.strftime('%Y-%m-%d %H:%M') }}
+            </div>
+        </div>
+        <!-- Footer with data source information -->
+        <div class="footer">
+          Goolmanger Creek at Nimbin height data sourced from the BOM
+        </div>
+    </div>
+</body>
+</html>
